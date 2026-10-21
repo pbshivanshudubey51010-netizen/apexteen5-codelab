@@ -1,82 +1,360 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeLab Mobile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexTeen5 CodeLab</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#10131c;color:#f5f7ff;font-family:Arial,sans-serif}
-header{padding:16px;background:#1c2230}
-h2{margin:0 0 5px}
-p{margin:0;color:#b9c2d5;font-size:14px}
-main{padding:12px;max-width:900px;margin:auto}
-label{display:block;margin:14px 0 7px;font-weight:bold}
-textarea{width:100%;height:145px;resize:vertical;background:#090c13;color:#b9e5ff;border:1px solid #3b455b;border-radius:9px;padding:12px;font:14px monospace}
-button{padding:12px 16px;border:0;border-radius:8px;font-weight:bold;font-size:15px;cursor:pointer}
-#run{background:#22c55e;color:#07120a;margin:14px 0}
-#clear{background:#30394c;color:white}
-iframe{width:100%;height:350px;background:white;border:1px solid #59647a;border-radius:9px}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: white;
+}
+
+header {
+  padding: 16px;
+  background: #172238;
+  border-bottom: 1px solid #334155;
+}
+
+header h2 {
+  margin: 0 0 12px;
+}
+
+button {
+  border: none;
+  padding: 11px 15px;
+  margin: 4px 3px 4px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.run {
+  background: #65d6ad;
+  color: #082017;
+}
+
+.other {
+  background: #334155;
+  color: white;
+}
+
+.editors {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px;
+}
+
+.editor {
+  min-width: 0;
+  background: #172238;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.editor h3 {
+  margin: 0;
+  padding: 12px;
+  background: #243249;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  height: 240px;
+  padding: 12px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  background: #0d1525;
+  color: #e8eef9;
+  font: 13px/1.5 monospace;
+  tab-size: 2;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+}
+
+.panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #334155;
+  border-radius: 10px;
+}
+
+.panel h3 {
+  margin: 0;
+  padding: 12px;
+  background: #172238;
+}
+
+iframe {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 0;
+  background: white;
+}
+
+#console {
+  height: 320px;
+  overflow: auto;
+  padding: 12px;
+  background: #0d1525;
+  font: 12px/1.5 monospace;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.error {
+  color: #ff8e9b;
+}
+
+@media (max-width: 800px) {
+  .editors {
+    grid-template-columns: 1fr;
+  }
+
+  textarea {
+    height: 190px;
+  }
+
+  .bottom {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
-<body>
-<header>
-<h2>⚡ CodeLab Mobile</h2>
-<p>Write HTML, CSS & JavaScript — Preview your design</p>
-</header>
-<main>
-<label for="html">HTML</label>
-<textarea id="html" spellcheck="false"><h1>Hello World!</h1>
-<p>My first frontend design</p>
-<button onclick="document.querySelector('p').textContent='It works!'">Click Me</button></textarea>
 
-<label for="css">CSS</label>
-<textarea id="css" spellcheck="false">body {
-  font-family: Arial;
-  text-align: center;
-  padding: 30px;
-  background: #f0f7ff;
+<body>
+
+<header>
+  <h2>🚀 ApexTeen5 CodeLab</h2>
+  <p>HTML • CSS • JavaScript Playground</p>
+
+  <button class="run" id="runBtn">▶ Run Code</button>
+  <button class="other" id="sampleBtn">Load Example</button>
+  <button class="other" id="clearBtn">Clear All</button>
+</header>
+
+<main>
+  <section class="editors">
+
+    <div class="editor">
+      <h3>HTML</h3>
+      <textarea id="htmlCode" spellcheck="false"><main>
+  <h1>Hello Developer!</h1>
+  <p id="message">Welcome to CodeLab.</p>
+  <button id="helloBtn">Click Me</button>
+</main></textarea>
+    </div>
+
+    <div class="editor">
+      <h3>CSS</h3>
+      <textarea id="cssCode" spellcheck="false">body {
+  font-family: Arial, sans-serif;
+  padding: 25px;
+  color: #172554;
+  background: #e0f2fe;
 }
-h1 { color: #2563eb; }
+
+main {
+  max-width: 500px;
+  margin: auto;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+}
+
 button {
-  padding: 12px 20px;
-  background: #2563eb;
+  padding: 12px 18px;
+  background: #0f9f75;
   color: white;
-  border: 0;
+  border: none;
   border-radius: 8px;
 }</textarea>
+    </div>
 
-<label for="js">JavaScript</label>
-<textarea id="js" spellcheck="false">console.log("Hello from JavaScript!");</textarea>
+    <div class="editor">
+      <h3>JavaScript</h3>
+      <textarea id="jsCode" spellcheck="false">console.log("CodeLab is ready!");
 
-<div class="actions">
-<button id="run">▶ Run Preview</button>
-<button id="clear">Reset</button>
-</div>
+document.getElementById("helloBtn")
+  .addEventListener("click", function() {
+    document.getElementById("message").textContent =
+      "JavaScript is working! 🎉";
 
-<label>Live Preview</label>
-<iframe id="preview" title="Code output" sandbox="allow-scripts"></iframe>
+    console.log("Button clicked!");
+  });</textarea>
+    </div>
+
+  </section>
+
+  <section class="bottom">
+    <div class="panel">
+      <h3>Live Preview</h3>
+      <iframe
+        id="preview"
+        title="Live code preview"
+        sandbox="allow-scripts">
+      </iframe>
+    </div>
+
+    <div class="panel">
+      <h3>
+        Console
+        <button class="other" id="clearConsoleBtn">
+          Clear
+        </button>
+      </h3>
+      <div id="console">Run your code to see messages.</div>
+    </div>
+  </section>
 </main>
 
 <script>
-const html=document.getElementById('html');
-const css=document.getElementById('css');
-const js=document.getElementById('js');
-const preview=document.getElementById('preview');
+const htmlEditor = document.getElementById("htmlCode");
+const cssEditor = document.getElementById("cssCode");
+const jsEditor = document.getElementById("jsCode");
+const preview = document.getElementById("preview");
+const consoleBox = document.getElementById("console");
 
-function runCode(){
- const source=html.value;
- const style=css.value.replace(/<\/style/gi,'<\\/style');
- const script=js.value.replace(/<\/script/gi,'<\\/script');
- preview.srcdoc='<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>'+style+'</style></head><body>'+source+'<script>'+script+'<\/script></body></html>';
+function runCode() {
+  consoleBox.textContent = "Running code...";
+
+  const bridge = `
+<script>
+(function() {
+  function show(level, args) {
+    const message = Array.from(args).map(function(value) {
+      if (value instanceof Error) return value.stack || value.message;
+      if (typeof value === "string") return value;
+      try { return JSON.stringify(value); }
+      catch (e) { return String(value); }
+    }).join(" ");
+
+    parent.postMessage({
+      source: "apexteen-console",
+      level: level,
+      message: message
+    }, "*");
+  }
+
+  ["log", "info", "warn", "error"].forEach(function(level) {
+    const original = console[level].bind(console);
+    console[level] = function() {
+      original.apply(console, arguments);
+      show(level, arguments);
+    };
+  });
+
+  window.addEventListener("error", function(event) {
+    show("error", [event.message]);
+  });
+
+  window.addEventListener("unhandledrejection", function(event) {
+    show("error", ["Promise error:", event.reason]);
+  });
+})();
+<\/script>`;
+
+  const css = cssEditor.value.replace(/<\/style/gi, "<\\/style");
+  const js = jsEditor.value.replace(/<\/script/gi, "<\\/script");
+
+  const page = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>${css}</style>
+${bridge}
+</head>
+<body>
+${htmlEditor.value}
+<script>
+try {
+${js}
+} catch(error) {
+  console.error(error);
 }
-document.getElementById('run').addEventListener('click',runCode);
-document.getElementById('clear').addEventListener('click',()=>{
- html.value='';css.value='';js.value='';preview.srcdoc='';
+<\/script>
+</body>
+</html>`;
+
+  preview.srcdoc = page;
+}
+
+window.addEventListener("message", function(event) {
+  if (event.source !== preview.contentWindow) return;
+
+  const data = event.data;
+  if (!data || data.source !== "apexteen-console") return;
+
+  if (consoleBox.textContent === "Running code...") {
+    consoleBox.textContent = "";
+  }
+
+  const line = document.createElement("div");
+  line.textContent = "[" + data.level + "] " + data.message;
+
+  if (data.level === "error") {
+    line.className = "error";
+  }
+
+  consoleBox.appendChild(line);
 });
+
+document.getElementById("runBtn")
+  .addEventListener("click", runCode);
+
+document.getElementById("clearConsoleBtn")
+  .addEventListener("click", function() {
+    consoleBox.textContent = "";
+  });
+
+document.getElementById("clearBtn")
+  .addEventListener("click", function() {
+    htmlEditor.value = "";
+    cssEditor.value = "";
+    jsEditor.value = "";
+    preview.srcdoc = "";
+    consoleBox.textContent = "";
+  });
+
+document.getElementById("sampleBtn")
+  .addEventListener("click", function() {
+    htmlEditor.value =
+      '<h1>Mini Counter</h1><p id="count">0</p>' +
+      '<button id="add">Add One</button>';
+
+    cssEditor.value =
+      'body { font-family: Arial; padding: 25px; }' +
+      'button { padding: 12px; background: #65d6ad; border: 0; }';
+
+    jsEditor.value =
+      'let count = 0;' +
+      'document.getElementById("add").addEventListener("click", function() {' +
+      ' count++; document.getElementById("count").textContent = count;' +
+      ' console.log("Count:", count); });';
+
+    runCode();
+  });
+
 runCode();
 </script>
+
 </body>
 </html>
