@@ -1,21 +1,44 @@
-<div id="aiBot" style="position:fixed;bottom:20px;right:20px;z-index:999">
-  <div id="botBox" style="display:none;width:320px;height:400px;background:#111;border:2px solid #ffcc00;border-radius:15px;flex-direction:column;overflow:hidden">
-    <div style="background:#ffcc00;color:#000;padding:10px;font-weight:bold">ApexTeen AI ✨</div>
-    <div id="botChat" style="flex:1;padding:10px;overflow:auto;font-size:14px">Hi! Python ya Game ka code pucho...</div>
-    <div style="display:flex;padding:5px"><input id="botInput" placeholder="Code likho..." style="flex:1;padding:8px;border-radius:20px;border:none"><button onclick="askBot()" style="margin-left:5px;background:#ffcc00;border:none;border-radius:50%;width:35px;height:35px">➤</button></div>
-  </div>
-  <button onclick="document.getElementById('botBox').style.display=document.getElementById('botBox').style.display==='flex'?'none':'flex'" style="width:60px;height:60px;border-radius:50%;background:#ffcc00;border:none;font-size:25px;box-shadow:0 0 20px #ffcc00">🤖</button>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexTeen5 Codelab</title>
+<style>
+body{margin:0;background:#0a0a0a;color:#fff;font-family:sans-serif;text-align:center;padding:50px}
+h1{color:#ffcc00;font-size:40px;text-shadow:0 0 20px #ffcc00}
+.card{background:#1a1a1a;padding:30px;border-radius:20px;max-width:600px;margin:20px auto;border:2px solid #ffcc00}
+.btn{padding:15px 30px;background:#ffcc00;color:#000;border:none;border-radius:30px;font-weight:bold;font-size:18px;margin:10px;cursor:pointer}
+#game{width:300px;height:300px;background:#000;margin:20px auto;border:2px solid #333;position:relative;border-radius:15px;overflow:hidden}
+</style>
+</head>
+<body>
+<h1>🚀 APEXTEEN5 CODELAB IS LIVE!</h1>
+<div class="card">
+<h2>Jai Maa Saraswati 🙏</h2>
+<p>Aapki website ab kaam kar rahi hai!</p>
+<button class="btn" onclick="startGame()">🎮 Game Khelo</button>
+<button class="btn" onclick="runPython()">🐍 Python Run Karo</button>
+<div id="game"><div id="player" style="width:20px;height:20px;background:#ffcc00;position:absolute;left:140px;top:140px;border-radius:50%"></div></div>
+<p id="output">Output yahan ayega...</p>
 </div>
+
 <script>
-function askBot(){
- let q=document.getElementById('botInput').value;
- let chat=document.getElementById('botChat');
- chat.innerHTML+=`<div style="text-align:right;margin:5px;color:#ffcc00">You: ${q}</div>`;
- let ans="Iska code Python Lab me daal kar run karo:<br><code>print('Aapne pucha: ${q}')</code>";
- if(q.toLowerCase().includes('snake')) ans="Snake ke liye: <br><code>import pygame<br># Full code ke liye Web Lab dekho</code>";
- if(q.toLowerCase().includes('certificate')) ans="Certificate Lab jaldi aa raha hai!";
- chat.innerHTML+=`<div style="margin:5px;background:#222;padding:8px;border-radius:10px">AI: ${ans}</div>`;
- document.getElementById('botInput').value='';
- chat.scrollTop=chat.scrollHeight;
+let x=140,y=140;
+function startGame(){
+ document.getElementById('output').innerText="Game Start! Keyboard se arrow dabao";
+ document.addEventListener('keydown', (e)=>{
+   if(e.key=='ArrowUp') y-=10;
+   if(e.key=='ArrowDown') y+=10;
+   if(e.key=='ArrowLeft') x-=10;
+   if(e.key=='ArrowRight') x+=10;
+   document.getElementById('player').style.left=x+'px';
+   document.getElementById('player').style.top=y+'px';
+ });
+}
+function runPython(){
+ document.getElementById('output').innerText="Python Code Chal Raha Hai...\nprint('Jai Maa Saraswati')\nOutput: Jai Maa Saraswati\nGame 1 Loading... Game 2 Loading...";
 }
 </script>
+</body>
+</html>
