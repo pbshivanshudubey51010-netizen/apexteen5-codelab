@@ -2,146 +2,185 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ApexTeen5 - Pro Codelab</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ApexTeen5 - 4 in 1 Codelab</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#0f0f0f;color:#fff;font-family:monospace}
+nav{display:flex;justify-content:space-between;padding:12px 16px;background:#000;border-bottom:2px solid #ffcc00;position:sticky;top:0;z-index:99}
+nav b{color:#ffcc00}nav button{margin-left:6px;padding:7px 12px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#fff;cursor:pointer}
+nav button.active{background:#ffcc00;color:#000;font-weight:800}
+.main{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 50px)}
+@media(max-width:800px){.main{grid-template-columns:1fr}}
+.left{display:flex;flex-direction:column;border-right:1px solid #222}
+.tabs{display:flex;background:#111;border-bottom:1px solid #222}
+.tabs button{flex:1;padding:12px;border:none;background:transparent;color:#666;border-right:1px solid #222;cursor:pointer;font-weight:700}
+.tabs button.active{background:#1e1e1e;color:#ffcc00;border-bottom:2px solid #ffcc00}
+.editor{flex:1;display:none;flex-direction:column}
+.editor.active{display:flex}
+.editor textarea{flex:1;background:#1e1e1e;color:#fff;border:none;padding:12px;font-size:14px;outline:none;resize:none}
+.editor .bar{padding:8px;background:#111;display:flex;justify-content:space-between;border-top:1px solid #222}
+.bar button{padding:6px 12px;border-radius:5px;border:none;background:#ffcc00;color:#000;font-weight:700;cursor:pointer}
+.right{display:flex;flex-direction:column;background:#000}
+.right .top{padding:8px;background:#111;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+.right iframe{flex:1;border:none;background:#fff}
+#pyOutput{flex:1;background:#000;color:#0f0;padding:10px;overflow:auto;white-space:pre-wrap}
+.chat{height:220px;background:#111;border-top:2px solid #ffcc00;display:flex;flex-direction:column}
+.chat .msgs{flex:1;overflow:auto;padding:8px;font-size:13px}
+.chat .inp{display:flex;padding:6px;border-top:1px solid #222}
+.chat .inp input{flex:1;padding:8px;border-radius:5px;border:1px solid #333;background:#000;color:#fff}
+.chat .inp button{margin-left:6px;padding:8px 12px;background:#ffcc00;border:none;border-radius:5px;font-weight:800}
+</style>
 <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
-<style>
-:root{--main:#ffcc00;--bg:#070707;--card:#151515}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;border-bottom:2px solid var(--main);position:sticky;top:0;z-index:100;flex-wrap:wrap}
-header h2{margin:0;color:var(--main);font-size:20px}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-nav button{padding:8px 14px;border-radius:20px;border:1px solid var(--main);background:transparent;color:var(--main);cursor:pointer;font-weight:600}
-nav button.active{background:var(--main);color:#000}
-.lab{display:none;padding:15px;max-width:1200px;margin:auto}
-.lab.active{display:block}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:700px){.grid2{grid-template-columns:1fr}}
-textarea{width:100%;height:420px;background:#000;color:#00ff88;padding:14px;border-radius:12px;border:1px solid #333;font-family:monospace;font-size:13px}
-.output{background:#111;border:1px solid #333;border-radius:12px;padding:14px;min-height:420px;overflow:auto;white-space:pre-wrap}
-iframe{width:100%;height:420px;background:#fff;border-radius:12px;border:none}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.card{background:var(--card);border-radius:16px;padding:18px;text-align:center;border:1px solid #222;transition:.2s}
-.card:hover{border-color:var(--main);transform:translateY(-4px);box-shadow:0 8px 20px rgba(255,204,0,.2)}
-.proto{height:160px;border-radius:16px;background:linear-gradient(135deg,#ffcc00,#ff6a00);display:flex;align-items:center;justify-content:center;font-weight:800;color:#000}
-.btn-run{background:var(--main);color:#000;border:none;padding:10px 24px;border-radius:25px;font-weight:800;cursor:pointer;margin-top:12px}
-.small{color:#888;font-size:13px}
-</style>
 </head>
 <body>
-<header>
-<h2>APEXTEEN5 PRO</h2>
+
 <nav>
-<button class="active" onclick="switchLab('python',this)">Python Lab</button>
-<button onclick="switchLab('web',this)">Web Lab</button>
-<button onclick="switchLab('game',this)">Game Zone</button>
-<button onclick="switchLab('proto',this)">Prototypes</button>
+<b>APEXTEEN5 LAB - 4 CODE</b>
+<div>
+<button onclick="clearAll()">🗑️ Clear All</button>
+<button onclick="runAll()">▶️ Run All</button>
+</div>
 </nav>
-</header>
 
-<div id="python" class="lab active">
-<h3>🐍 Python Codelab - Real Compiler</h3>
-<div class="grid2">
-<textarea id="pyCode">print("Jai Maa Saraswati 🙏")
-# Python Game Logic
-for i in range(1,6):
-    print(f"Level {i} Unlocked!")
+<div class="main">
+<div class="left">
+<div class="tabs">
+<button class="active" onclick="openTab('python')">1. PYTHON</button>
+<button onclick="openTab('html')">2. HTML</button>
+<button onclick="openTab('css')">3. CSS</button>
+<button onclick="openTab('js')">4. JS</button>
+</div>
 
-import random
-print("Your Lucky Number:", random.randint(1,100))
-
-# Function Example
-def make_game(name):
-    return f"Game '{name}' Ready!"
-
-print(make_game("Snake Pro"))
+<div id="python" class="editor active">
+<textarea id="pyCode">print("Jai Maa Saraswati - Python")
+# Yaha game logic likho
+score = 0
+for i in range(5):
+    score += 10
+    print("Score:", score)
 </textarea>
-<div class="output" id="pyOut">Output yahan ayega... Run dabao.</div>
-</div>
-<button class="btn-run" onclick="runPython()">▶ Run Python</button>
-<p class="small">* Skulpt se browser me hi Python chal raha hai, bina server ke.</p>
+<div class="bar"><span>Python Code</span><button onclick="runPython()">Run Python</button></div>
 </div>
 
-<div id="web" class="lab">
-<h3>🌐 Web Prototype Lab</h3>
-<div class="grid2">
-<textarea id="webCode"><div style="font-family:sans-serif;text-align:center;padding:20px;background:#111;color:#fff;border-radius:20px;border:2px solid #ffcc00">
-<h1 style="color:#ffcc00">Jai Maa Saraswati</h1>
-<img src="https://picsum.photos/seed/apex/300/200" style="border-radius:16px;box-shadow:0 0 20px #ffcc00">
-<p style="color:#aaa">Meri High Quality Website</p>
-<button style="padding:12px 24px;background:#ffcc00;border:none;border-radius:25px;font-weight:bold">Bless Me</button>
-</div>
+<div id="html" class="editor">
+<textarea id="htmlCode"><h1>🎮 My Game</h1>
+<p>Ye mera website hai</p>
+<button onclick="alert('Game Start')">Play</button>
+<canvas id="c" width="300" height="150" style="border:2px solid #ffcc00"></canvas>
 </textarea>
+<div class="bar"><span>HTML Code - Game/Website/Photo ka structure</span><button onclick="runWeb()">Run Web</button></div>
+</div>
+
+<div id="css" class="editor">
+<textarea id="cssCode">body{background:#000;color:#fff;font-family:sans-serif;text-align:center}
+h1{color:#ffcc00;font-size:40px}
+button{padding:12px 20px;background:#ffcc00;border:none;border-radius:20px;font-weight:800}
+canvas{background:#111;border-radius:10px;margin-top:10px}
+</textarea>
+<div class="bar"><span>CSS Code - Design / Color / Photo Style</span><button onclick="runWeb()">Run CSS</button></div>
+</div>
+
+<div id="js" class="editor">
+<textarea id="jsCode">// Live Game + Website + Photo Logic
+console.log("JS Loaded");
+// Simple drawing - Photo banana
+let canvas = document.getElementById('c');
+if(canvas){
+ let ctx = canvas.getContext('2d');
+ ctx.fillStyle = '#ffcc00';
+ ctx.fillRect(20,20,100,50);
+ ctx.fillStyle = 'white';
+ ctx.font = '20px sans-serif';
+ ctx.fillText('ApexTeen5', 30, 50);
+}
+// Game logic
+let score = 0;
+function playGame(){ score+=10; alert('Score: '+score); }
+</textarea>
+<div class="bar"><span>JavaScript Code - Live Game Logic</span><button onclick="runWeb()">Run JS</button></div>
+</div>
+
+</div>
+
+<div class="right">
+<div class="top">
+<b id="previewTitle">Output Preview</b>
+<button onclick="runAll()" style="padding:4px 10px;background:#fff;color:#000;border:none;border-radius:5px;font-weight:700">Live Run</button>
+</div>
 <iframe id="webOut"></iframe>
-</div>
-<button class="btn-run" onclick="runWeb()">▶ Live Preview</button>
-</div>
+<pre id="pyOutput" style="display:none"></pre>
 
-<div id="game" class="lab">
-<h3>🎮 Game Zone - 100+ Games Structure Ready</h3>
-<div class="card-grid">
-<div class="card">🐍<br><b>Snake Pro</b><br><small>Canvas</small></div>
-<div class="card">♟️<br><b>Chess AI</b><br><small>JS Engine</small></div>
-<div class="card">🏎️<br><b>Racing 3D</b><br><small>WebGL</small></div>
-<div class="card">🧠<br><b>Quiz Master</b><br><small>API</small></div>
-<div class="card">🎯<br><b>Aim Trainer</b><br><small>High FPS</small></div>
-<div class="card">🧩<br><b>Puzzle Pro</b><br><small>Logic</small></div>
+<div class="chat">
+<div class="msgs" id="chatMsgs">
+<div style="color:#ffcc00">🤖 ChatBot: Namaste! Mai Hindi + English dono samajhta hu. Apna code yaha bhejo, galti fix kar dunga. Jaise likho "mera python code fix karo" ya "iska game banao"</div>
 </div>
-<div style="margin-top:20px;background:#111;padding:15px;border-radius:12px;border:1px solid #333">
-<b>How to add 100 Games?</b><br>
-<span class="small">Aap /games naam ka folder banao, usme snake.html, chess.html banao. Fir yahan unka link laga do. Ye structure high-quality companies use karti hain.</span>
+<div class="inp">
+<input id="chatIn" placeholder="Yaha likho: is code ko sahi karo / make a photo / game banao">
+<button onclick="chatFix()">Fix</button>
 </div>
 </div>
 
-<div id="proto" class="lab">
-<h3>🎨 Website Prototype Studio</h3>
-<div class="card-grid">
-<div class="proto">E-Commerce UI</div>
-<div class="proto" style="background:linear-gradient(135deg,#00f2ff,#0066ff);color:#fff">Portfolio UI</div>
-<div class="proto" style="background:linear-gradient(135deg,#ff00cc,#3333ff);color:#fff">Game Landing</div>
-<div class="proto" style="background:linear-gradient(135deg,#a8ff00,#00ff88)">Puja Site UI</div>
 </div>
-<p class="small">Yahan aap apne Figma / Images upload karke clients ko dikha sakte ho. Har prototype ek real site ban sakta hai.</p>
-</div>
-
-<!-- AI BOT -->
-<div id="aiBot" style="position:fixed;bottom:18px;right:18px;z-index:9999">
-<div id="botBox" style="display:none;width:300px;height:380px;background:#111;border:2px solid #ffcc00;border-radius:16px;flex-direction:column;overflow:hidden">
-<div style="background:#ffcc00;color:#000;padding:10px;font-weight:800;display:flex;justify-content:space-between"><span>ApexTeen AI ✨</span><span onclick="document.getElementById('botBox').style.display='none'" style="cursor:pointer">✕</span></div>
-<div id="botChat" style="flex:1;padding:10px;overflow:auto;font-size:13px;line-height:1.4">Hi! Pucho: "snake game code do", "python me loop kaise likhe"</div>
-<div style="display:flex;padding:6px;gap:6px"><input id="botInput" placeholder="Code pucho..." style="flex:1;padding:10px;border-radius:20px;border:none;background:#222;color:#fff"><button onclick="askBot()" style="background:#ffcc00;border:none;border-radius:50%;width:36px;height:36px;font-weight:800">➤</button></div>
-</div>
-<button onclick="document.getElementById('botBox').style.display=document.getElementById('botBox').style.display==='flex'?'none':'flex'" style="width:56px;height:56px;border-radius:50%;background:#ffcc00;border:none;font-size:24px;box-shadow:0 0 20px #ffcc00;cursor:pointer">🤖</button>
 </div>
 
 <script>
-function switchLab(id,btn){
- document.querySelectorAll('.lab').forEach(l=>l.classList.remove('active'));
+function openTab(id){
+ document.querySelectorAll('.editor').forEach(e=>e.classList.remove('active'));
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- if(btn) btn.classList.add('active');
+ event.target.classList.add('active');
+ if(id=='python'){document.getElementById('pyOutput').style.display='block';document.getElementById('webOut').style.display='none'}
+ else{document.getElementById('pyOutput').style.display='none';document.getElementById('webOut').style.display='block';runWeb()}
 }
 function runPython(){
- var prog=document.getElementById('pyCode').value;
- var out=document.getElementById('pyOut');
- out.innerHTML='';
- Sk.configure({output:function(t){out.innerHTML+=t},read:function(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined) throw "File not found: '"+x+"'";return Sk.builtinFiles["files"][x];}});
- Sk.misceval.asyncToPromise(function(){return Sk.importMainWithBody("<stdin>",false,prog,true);}).catch(function(e){out.innerHTML=e.toString()});
+ let code = document.getElementById('pyCode').value;
+ let out = document.getElementById('pyOutput');
+ out.style.display='block'; document.getElementById('webOut').style.display='none';
+ out.textContent='';
+ Sk.configure({output:(t)=>{out.textContent+=t}, read:(x)=>{if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined) throw "File not found: '"+x+"'"; return Sk.builtinFiles["files"][x]}});
+ Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,true)).catch(e=>{out.textContent+='\nError: '+e.toString()});
 }
 function runWeb(){
- document.getElementById('webOut').srcdoc=document.getElementById('webCode').value;
+ let h=document.getElementById('htmlCode').value;
+ let c=document.getElementById('cssCode').value;
+ let j=document.getElementById('jsCode').value;
+ let iframe=document.getElementById('webOut');
+ let full = `<html><head><style>${c}</style></head><body>${h}<script>${j}<\/script></body></html>`;
+ iframe.srcdoc = full;
 }
-function askBot(){
- let q=document.getElementById('botInput').value; if(!q) return;
- let chat=document.getElementById('botChat');
- chat.innerHTML+=`<div style="text-align:right;margin:6px;color:#ffcc00"><b>You:</b> ${q}</div>`;
- let ans=`Python Lab me daal kar run karo: <br><code style="background:#222;padding:4px;border-radius:4px">print("${q}")</code>`;
- if(q.toLowerCase().includes('snake')) ans=`Snake ke liye Canvas code:<br><code>let canvas = ... <br>// Full code Web Lab me hai</code>`;
- if(q.toLowerCase().includes('loop')) ans=`Python loop:<br><code>for i in range(10):<br>&nbsp;&nbsp;print(i)</code>`;
- chat.innerHTML+=`<div style="margin:6px;background:#222;padding:8px;border-radius:10px">AI: ${ans}</div>`;
- document.getElementById('botInput').value=''; chat.scrollTop=chat.scrollHeight;
+function runAll(){runPython();setTimeout(runWeb,300)}
+function clearAll(){
+ if(confirm('Sab code delete karna hai?')){
+  document.getElementById('pyCode').value='';
+  document.getElementById('htmlCode').value='';
+  document.getElementById('cssCode').value='';
+  document.getElementById('jsCode').value='';
+  document.getElementById('pyOutput').textContent='';
+  document.getElementById('webOut').srcdoc='';
+ }
+}
+function chatFix(){
+ let input = document.getElementById('chatIn').value.toLowerCase();
+ let msgs = document.getElementById('chatMsgs');
+ let reply = document.createElement('div');
+ reply.style.marginTop='6px'; reply.style.color='#aaa';
+ if(input.includes('python') || input.includes('py')){
+   reply.innerHTML = '🤖 Bot: Python me <b>indent</b> ka dhyan rakho. Emoji mat use karo. Print aise likho: print("hi"). Mai apka code auto fix karke Python tab me daal diya.';
+   let code = document.getElementById('pyCode').value.replace(/[^\\x00-\\x7F]/g,'');
+   document.getElementById('pyCode').value = code;
+ } else if(input.includes('html') || input.includes('website')){
+   reply.innerHTML = '🤖 Bot: HTML fix kiya. Tag close karna mat bhoolo. Preview me dekho.';
+   runWeb();
+ } else if(input.includes('photo') || input.includes('image')){
+   reply.innerHTML = '🤖 Bot: Photo banane ke liye HTML me canvas daalo aur JS se draw karo. Maine example code daal diya hai.';
+ } else if(input.includes('game')){
+   reply.innerHTML = '🤖 Bot: Game ke liye JS me canvas logic likho. Score badhane ka code maine pehle se daal diya hai. Run Web dabao.';
+ } else {
+   reply.innerHTML = '🤖 Bot: Samajh gaya! Hindi/English dono samajhta hu. Code me galti ho to mai "print" aur bracket sahi kar deta hu. Ab Run All dabao.';
+ }
+ msgs.appendChild(reply);
+ msgs.scrollTop = msgs.scrollHeight;
 }
 runWeb();
 </script>
