@@ -1,44 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ApexTeen5 Codelab</title>
+<title>ApexTeen5 - Pro Codelab</title>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
 <style>
-body{margin:0;background:#0a0a0a;color:#fff;font-family:sans-serif;text-align:center;padding:50px}
-h1{color:#ffcc00;font-size:40px;text-shadow:0 0 20px #ffcc00}
-.card{background:#1a1a1a;padding:30px;border-radius:20px;max-width:600px;margin:20px auto;border:2px solid #ffcc00}
-.btn{padding:15px 30px;background:#ffcc00;color:#000;border:none;border-radius:30px;font-weight:bold;font-size:18px;margin:10px;cursor:pointer}
-#game{width:300px;height:300px;background:#000;margin:20px auto;border:2px solid #333;position:relative;border-radius:15px;overflow:hidden}
+:root{--main:#ffcc00;--bg:#070707;--card:#151515}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;border-bottom:2px solid var(--main);position:sticky;top:0;z-index:100;flex-wrap:wrap}
+header h2{margin:0;color:var(--main);font-size:20px}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{padding:8px 14px;border-radius:20px;border:1px solid var(--main);background:transparent;color:var(--main);cursor:pointer;font-weight:600}
+nav button.active{background:var(--main);color:#000}
+.lab{display:none;padding:15px;max-width:1200px;margin:auto}
+.lab.active{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+textarea{width:100%;height:420px;background:#000;color:#00ff88;padding:14px;border-radius:12px;border:1px solid #333;font-family:monospace;font-size:13px}
+.output{background:#111;border:1px solid #333;border-radius:12px;padding:14px;min-height:420px;overflow:auto;white-space:pre-wrap}
+iframe{width:100%;height:420px;background:#fff;border-radius:12px;border:none}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--card);border-radius:16px;padding:18px;text-align:center;border:1px solid #222;transition:.2s}
+.card:hover{border-color:var(--main);transform:translateY(-4px);box-shadow:0 8px 20px rgba(255,204,0,.2)}
+.proto{height:160px;border-radius:16px;background:linear-gradient(135deg,#ffcc00,#ff6a00);display:flex;align-items:center;justify-content:center;font-weight:800;color:#000}
+.btn-run{background:var(--main);color:#000;border:none;padding:10px 24px;border-radius:25px;font-weight:800;cursor:pointer;margin-top:12px}
+.small{color:#888;font-size:13px}
 </style>
 </head>
 <body>
-<h1>🚀 APEXTEEN5 CODELAB IS LIVE!</h1>
-<div class="card">
-<h2>Jai Maa Saraswati 🙏</h2>
-<p>Aapki website ab kaam kar rahi hai!</p>
-<button class="btn" onclick="startGame()">🎮 Game Khelo</button>
-<button class="btn" onclick="runPython()">🐍 Python Run Karo</button>
-<div id="game"><div id="player" style="width:20px;height:20px;background:#ffcc00;position:absolute;left:140px;top:140px;border-radius:50%"></div></div>
-<p id="output">Output yahan ayega...</p>
+<header>
+<h2>APEXTEEN5 PRO</h2>
+<nav>
+<button class="active" onclick="switchLab('python',this)">Python Lab</button>
+<button onclick="switchLab('web',this)">Web Lab</button>
+<button onclick="switchLab('game',this)">Game Zone</button>
+<button onclick="switchLab('proto',this)">Prototypes</button>
+</nav>
+</header>
+
+<div id="python" class="lab active">
+<h3>🐍 Python Codelab - Real Compiler</h3>
+<div class="grid2">
+<textarea id="pyCode">print("Jai Maa Saraswati 🙏")
+# Python Game Logic
+for i in range(1,6):
+    print(f"Level {i} Unlocked!")
+
+import random
+print("Your Lucky Number:", random.randint(1,100))
+
+# Function Example
+def make_game(name):
+    return f"Game '{name}' Ready!"
+
+print(make_game("Snake Pro"))
+</textarea>
+<div class="output" id="pyOut">Output yahan ayega... Run dabao.</div>
+</div>
+<button class="btn-run" onclick="runPython()">▶ Run Python</button>
+<p class="small">* Skulpt se browser me hi Python chal raha hai, bina server ke.</p>
+</div>
+
+<div id="web" class="lab">
+<h3>🌐 Web Prototype Lab</h3>
+<div class="grid2">
+<textarea id="webCode"><div style="font-family:sans-serif;text-align:center;padding:20px;background:#111;color:#fff;border-radius:20px;border:2px solid #ffcc00">
+<h1 style="color:#ffcc00">Jai Maa Saraswati</h1>
+<img src="https://picsum.photos/seed/apex/300/200" style="border-radius:16px;box-shadow:0 0 20px #ffcc00">
+<p style="color:#aaa">Meri High Quality Website</p>
+<button style="padding:12px 24px;background:#ffcc00;border:none;border-radius:25px;font-weight:bold">Bless Me</button>
+</div>
+</textarea>
+<iframe id="webOut"></iframe>
+</div>
+<button class="btn-run" onclick="runWeb()">▶ Live Preview</button>
+</div>
+
+<div id="game" class="lab">
+<h3>🎮 Game Zone - 100+ Games Structure Ready</h3>
+<div class="card-grid">
+<div class="card">🐍<br><b>Snake Pro</b><br><small>Canvas</small></div>
+<div class="card">♟️<br><b>Chess AI</b><br><small>JS Engine</small></div>
+<div class="card">🏎️<br><b>Racing 3D</b><br><small>WebGL</small></div>
+<div class="card">🧠<br><b>Quiz Master</b><br><small>API</small></div>
+<div class="card">🎯<br><b>Aim Trainer</b><br><small>High FPS</small></div>
+<div class="card">🧩<br><b>Puzzle Pro</b><br><small>Logic</small></div>
+</div>
+<div style="margin-top:20px;background:#111;padding:15px;border-radius:12px;border:1px solid #333">
+<b>How to add 100 Games?</b><br>
+<span class="small">Aap /games naam ka folder banao, usme snake.html, chess.html banao. Fir yahan unka link laga do. Ye structure high-quality companies use karti hain.</span>
+</div>
+</div>
+
+<div id="proto" class="lab">
+<h3>🎨 Website Prototype Studio</h3>
+<div class="card-grid">
+<div class="proto">E-Commerce UI</div>
+<div class="proto" style="background:linear-gradient(135deg,#00f2ff,#0066ff);color:#fff">Portfolio UI</div>
+<div class="proto" style="background:linear-gradient(135deg,#ff00cc,#3333ff);color:#fff">Game Landing</div>
+<div class="proto" style="background:linear-gradient(135deg,#a8ff00,#00ff88)">Puja Site UI</div>
+</div>
+<p class="small">Yahan aap apne Figma / Images upload karke clients ko dikha sakte ho. Har prototype ek real site ban sakta hai.</p>
+</div>
+
+<!-- AI BOT -->
+<div id="aiBot" style="position:fixed;bottom:18px;right:18px;z-index:9999">
+<div id="botBox" style="display:none;width:300px;height:380px;background:#111;border:2px solid #ffcc00;border-radius:16px;flex-direction:column;overflow:hidden">
+<div style="background:#ffcc00;color:#000;padding:10px;font-weight:800;display:flex;justify-content:space-between"><span>ApexTeen AI ✨</span><span onclick="document.getElementById('botBox').style.display='none'" style="cursor:pointer">✕</span></div>
+<div id="botChat" style="flex:1;padding:10px;overflow:auto;font-size:13px;line-height:1.4">Hi! Pucho: "snake game code do", "python me loop kaise likhe"</div>
+<div style="display:flex;padding:6px;gap:6px"><input id="botInput" placeholder="Code pucho..." style="flex:1;padding:10px;border-radius:20px;border:none;background:#222;color:#fff"><button onclick="askBot()" style="background:#ffcc00;border:none;border-radius:50%;width:36px;height:36px;font-weight:800">➤</button></div>
+</div>
+<button onclick="document.getElementById('botBox').style.display=document.getElementById('botBox').style.display==='flex'?'none':'flex'" style="width:56px;height:56px;border-radius:50%;background:#ffcc00;border:none;font-size:24px;box-shadow:0 0 20px #ffcc00;cursor:pointer">🤖</button>
 </div>
 
 <script>
-let x=140,y=140;
-function startGame(){
- document.getElementById('output').innerText="Game Start! Keyboard se arrow dabao";
- document.addEventListener('keydown', (e)=>{
-   if(e.key=='ArrowUp') y-=10;
-   if(e.key=='ArrowDown') y+=10;
-   if(e.key=='ArrowLeft') x-=10;
-   if(e.key=='ArrowRight') x+=10;
-   document.getElementById('player').style.left=x+'px';
-   document.getElementById('player').style.top=y+'px';
- });
+function switchLab(id,btn){
+ document.querySelectorAll('.lab').forEach(l=>l.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(btn) btn.classList.add('active');
 }
 function runPython(){
- document.getElementById('output').innerText="Python Code Chal Raha Hai...\nprint('Jai Maa Saraswati')\nOutput: Jai Maa Saraswati\nGame 1 Loading... Game 2 Loading...";
+ var prog=document.getElementById('pyCode').value;
+ var out=document.getElementById('pyOut');
+ out.innerHTML='';
+ Sk.configure({output:function(t){out.innerHTML+=t},read:function(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined) throw "File not found: '"+x+"'";return Sk.builtinFiles["files"][x];}});
+ Sk.misceval.asyncToPromise(function(){return Sk.importMainWithBody("<stdin>",false,prog,true);}).catch(function(e){out.innerHTML=e.toString()});
 }
+function runWeb(){
+ document.getElementById('webOut').srcdoc=document.getElementById('webCode').value;
+}
+function askBot(){
+ let q=document.getElementById('botInput').value; if(!q) return;
+ let chat=document.getElementById('botChat');
+ chat.innerHTML+=`<div style="text-align:right;margin:6px;color:#ffcc00"><b>You:</b> ${q}</div>`;
+ let ans=`Python Lab me daal kar run karo: <br><code style="background:#222;padding:4px;border-radius:4px">print("${q}")</code>`;
+ if(q.toLowerCase().includes('snake')) ans=`Snake ke liye Canvas code:<br><code>let canvas = ... <br>// Full code Web Lab me hai</code>`;
+ if(q.toLowerCase().includes('loop')) ans=`Python loop:<br><code>for i in range(10):<br>&nbsp;&nbsp;print(i)</code>`;
+ chat.innerHTML+=`<div style="margin:6px;background:#222;padding:8px;border-radius:10px">AI: ${ans}</div>`;
+ document.getElementById('botInput').value=''; chat.scrollTop=chat.scrollHeight;
+}
+runWeb();
 </script>
 </body>
 </html>
