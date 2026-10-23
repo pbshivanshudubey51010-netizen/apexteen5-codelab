@@ -1,61 +1,81 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>APEXTEEN5 - GitHub Only</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APEXTEEN5 - Real Engines</title>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <style>
-*{margin:0;box-sizing:border-box}body{font-family:sans-serif;background:#0e0e0e;color:#fff}
-.layout{display:flex;height:100vh}
-.side{width:220px;background:#000;border-right:1px solid #222;padding:10px;overflow:auto}
-.side b{color:#ffcc00;display:block;margin-bottom:10px;font-size:18px}
-.side button{width:100%;padding:10px;margin-bottom:6px;background:#111;color:#ccc;border:1px solid #222;border-radius:8px;text-align:left}
-.side button.on{background:#ffcc00;color:#000;font-weight:800;border-color:#ffcc00}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
-.top{padding:10px;background:#111;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
-.top button{background:#ffcc00;color:#000;border:none;padding:8px 18px;border-radius:20px;font-weight:800}
-textarea{flex:1;background:#1e1e1e;color:#fff;border:none;padding:12px;font-size:14px;outline:none;resize:none;font-family:monospace}
-.output{height:40%;background:#000;border-top:2px solid #ffcc00;overflow:auto}
-.output iframe{width:100%;height:100%;border:none;background:#fff}
-.output pre{color:#0f0;padding:10px;white-space:pre-wrap;font-family:monospace}
-.hint{font-size:11px;color:#888;padding:6px 10px;background:#1a1a1a}
-@media(max-width:700px){.layout{flex-direction:column}.side{width:100%;display:flex;gap:6px;overflow-x:auto;padding:8px}.side b,.side hr,.side p{display:none}.side button{white-space:nowrap;width:auto;padding:8px 12px}.output{height:50%}}
-</style>
-</head>
-<body>
-<div class="layout">
-<div class="side">
-<b>APEXTEEN5 - GitHub Only</b>
-<button class="on" id="b-main.py" onclick="openF('main.py')">📄 main.py</button>
-<button id="b-index.html" onclick="openF('index.html')">📄 index.html</button>
-<button id="b-style.css" onclick="openF('style.css')">🎨 style.css</button>
-<button id="b-game.js" onclick="openF('game.js')">🎮 game.js</button>
-<hr style="margin:8px 0;border-color:#222">
-<button onclick="addF()">+ Add Cell</button>
-<button onclick="localStorage.clear();location.reload()" style="color:#ff5555">🗑️ Clear</button>
-<p style="font-size:10px;color:#555;margin-top:20px">Sab GitHub + Browser me save hai. Koi server nahi.<br>Jai Maa Saraswati</p>
+*{box-sizing:border-box;margin:0}body{background:#0a0a0a;color:#fff;font-family:monospace}
+header{background:#000;padding:10px;border-bottom:2px solid #ffcc00;display:flex;justify-content:space-between}
+header button{background:#ffcc00;border:0;padding:8px 16px;border-radius:20px;font-weight:800}
+.tabs{display:flex;gap:5px;padding:8px;background:#000;border-bottom:1px solid #222;overflow:auto}
+.tabs button{padding:7px 12px;border-radius:20px;border:1px solid #333;background:#111;color:#aaa;white-space:nowrap}
+.tabs button.on{background:#ffcc00;color:#000}
+.panels{display:flex;height:75vh}
+.panel{flex:1;display:flex;flex-direction:column;border-right:1px solid #222}
+.panel h4{padding:6px 8px;background:#111;color:#ffcc00;font-size:12px;border-bottom:1px solid #222}
+textarea{flex:1;background:#1e1e1e;color:#fff;border:0;padding:10px;outline:none;font-size:13px;resize:none}
+.output{flex:1;background:#000;overflow:auto}
+.output iframe{width:100%;height:100%;border:0;background:#fff}
+.output pre{color:#0f0;padding:8px;white-space:pre-wrap}
+@media(max-width:700px){.panels{flex-direction:column}}
+</style></head><body>
+<header><b>APEXTEEN5 - REAL ENGINE: Pyodide + Browser + WebContainer</b><button onclick="runAll()">▶ Run All (Real)</button></header>
+<div class="tabs">
+<button class="on" onclick="focusTab('py')">Python - Real Pyodide (Colab)</button>
+<button onclick="focusTab('web')">HTML/CSS/JS - Real Browser (Replit)</button>
 </div>
-<div class="main">
-<div class="top"><span id="fn">game.js</span><button onclick="run()">▶ Run</button></div>
-<div class="hint">💡 GitHub Pages pe hi Colab jaisa: Python cell add karo, HTML se website banao, JS se Game/Photo banao. Code auto-save hai.</div>
-<textarea id="code"></textarea>
-<div class="output"><pre id="pout"></pre><iframe id="wout"></iframe></div>
+<div class="panels">
+<div class="panel"><h4>main.py - REAL PYTHON ENGINE (Pyodide)</h4><textarea id="py">import sys
+print("Jai Maa Saraswati - Real Python")
+print("Python version:", sys.version)
+# Real numpy bhi chalega
+try:
+ import numpy as np
+ print("Numpy:", np.array([1,2,3])*2)
+except:
+ print("Numpy load ho raha hai...")
+
+# Real Colab Cell
+for i in range(3):
+ print(f"Colab Cell {i} - Real Engine")
+</textarea><div class="output"><pre id="pyout">Loading Real Python...</pre></div></div>
+<div class="panel"><h4>index.html + style.css + game.js - REAL BROWSER ENGINE</h4><textarea id="web"><h1 style="color:gold;text-align:center">Apex Game - Real JS Engine</h1>
+<div style="text-align:center">
+<canvas id="c" width="300" height="150" style="border:2px solid gold;background:#111"></canvas><br><br>
+<button onclick="play()" style="padding:10px 20px;background:gold;border:0;border-radius:20px;font-weight:800">Play Real Game</button>
 </div>
+<style>body{background:#000;color:#fff;text-align:center;font-family:sans-serif}</style>
+<script>
+let c=document.getElementById('c'), x=c.getContext('2d');
+let px=10;
+function draw(){x.clearRect(0,0,300,150);x.fillStyle='gold';x.fillRect(px,60,30,30);}
+draw();
+function play(){px+=20;if(px>270)px=10;draw();console.log('Real JS Engine - Browser');}
+<\/script>
+</textarea><div class="output"><iframe id="webout"></iframe></div></div>
 </div>
 <script>
-let F=JSON.parse(localStorage.getItem('apex')||'{"main.py":"print(\\"Jai Maa Saraswati\\")\\nprint(\\"ApexTeen5 GitHub Colab Ready\\")","index.html":"<h1 style=\\"color:gold;text-align:center\\">Meri Website</h1>\\n<div style=\\"text-align:center\\"><button onclick=\\"play()\\" style=\\"padding:10px 20px\\">Play Game</button><br><br><canvas id=\\"c\\" width=\\"300\\" height=\\"120\\" style=\\"border:2px solid gold\\"></canvas></div>","style.css":"body{background:#000;color:#fff;text-align:center;font-family:sans-serif}","game.js":"let c=document.getElementById(\\"c\\"); if(c){let x=c.getContext(\\"2d\\"); x.fillStyle=\\"gold\\"; x.fillRect(20,20,80,30); x.fillStyle=\\"white\\"; x.font=\\"14px sans-serif\\"; x.fillText(\\"Apex Photo\\",22,40)}\\nfunction play(){ alert(\\"Game Running - GitHub Only!\\"); }"}');
-let cur='main.py', py=null;
-(async()=>{py=await loadPyodide(); pout.textContent='Pyodide Ready - Asli Python'})();
-function openF(n){cur=n; fn.innerText=n; code.value=F[n]||''; document.querySelectorAll('.side button').forEach(b=>b.classList.remove('on')); let btn=document.getElementById('b-'+n); if(btn) btn.classList.add('on'); run();}
-code.addEventListener('input',()=>{F[cur]=code.value; localStorage.setItem('apex',JSON.stringify(F))});
-async function run(){
- F[cur]=code.value; localStorage.setItem('apex',JSON.stringify(F));
- if(cur.endsWith('.py')){ pout.style.display='block'; wout.style.display='none'; pout.textContent='Running...'; try{let r=await py.runPythonAsync(code.value); pout.textContent=r?r.toString():'✓ Done'}catch(e){pout.textContent='Error: '+e}}
- else{ pout.style.display='none'; wout.style.display='block'; wout.srcdoc=`<style>${F['style.css']}</style>${F['index.html']}<script>${F['game.js']}<\/script>`; }
+let py=null;
+async function init(){
+ py=await loadPyodide();
+ document.getElementById('pyout').textContent='Real Python Ready - Pyodide (Colab jaisa)';
+ runAll();
 }
-function addF(){let n=prompt('Naam: cell2.py ya new.html'); if(n){F[n]='print("New Cell")'; localStorage.setItem('apex',JSON.stringify(F)); location.reload()}}
-openF('game.js');
+init();
+async function runAll(){
+ // 1. REAL PYTHON ENGINE
+ let pcode=document.getElementById('py').value;
+ let pout=document.getElementById('pyout');
+ pout.textContent='Running Real Python...';
+ try{ 
+  await py.loadPackage('numpy'); // Real engine load
+  let r=await py.runPythonAsync(pcode);
+  pout.textContent=r?r.toString():'✓ Real Python Done';
+ }catch(e){ pout.textContent='Error: '+e; }
+
+ // 2. REAL HTML/CSS/JS ENGINE
+ let wcode=document.getElementById('web').value;
+ document.getElementById('webout').srcdoc=wcode;
+}
+function focusTab(t){ runAll(); }
 </script>
-</body>
-</html>
+</body></html>
