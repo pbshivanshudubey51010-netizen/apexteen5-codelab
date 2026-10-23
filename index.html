@@ -1,188 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ApexTeen5 - 4 in 1 Codelab</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ApexTeen5 - GitHub Colab</title>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#0f0f0f;color:#fff;font-family:monospace}
-nav{display:flex;justify-content:space-between;padding:12px 16px;background:#000;border-bottom:2px solid #ffcc00;position:sticky;top:0;z-index:99}
-nav b{color:#ffcc00}nav button{margin-left:6px;padding:7px 12px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#fff;cursor:pointer}
-nav button.active{background:#ffcc00;color:#000;font-weight:800}
-.main{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 50px)}
-@media(max-width:800px){.main{grid-template-columns:1fr}}
-.left{display:flex;flex-direction:column;border-right:1px solid #222}
-.tabs{display:flex;background:#111;border-bottom:1px solid #222}
-.tabs button{flex:1;padding:12px;border:none;background:transparent;color:#666;border-right:1px solid #222;cursor:pointer;font-weight:700}
-.tabs button.active{background:#1e1e1e;color:#ffcc00;border-bottom:2px solid #ffcc00}
-.editor{flex:1;display:none;flex-direction:column}
-.editor.active{display:flex}
-.editor textarea{flex:1;background:#1e1e1e;color:#fff;border:none;padding:12px;font-size:14px;outline:none;resize:none}
-.editor .bar{padding:8px;background:#111;display:flex;justify-content:space-between;border-top:1px solid #222}
-.bar button{padding:6px 12px;border-radius:5px;border:none;background:#ffcc00;color:#000;font-weight:700;cursor:pointer}
-.right{display:flex;flex-direction:column;background:#000}
-.right .top{padding:8px;background:#111;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
-.right iframe{flex:1;border:none;background:#fff}
-#pyOutput{flex:1;background:#000;color:#0f0;padding:10px;overflow:auto;white-space:pre-wrap}
-.chat{height:220px;background:#111;border-top:2px solid #ffcc00;display:flex;flex-direction:column}
-.chat .msgs{flex:1;overflow:auto;padding:8px;font-size:13px}
-.chat .inp{display:flex;padding:6px;border-top:1px solid #222}
-.chat .inp input{flex:1;padding:8px;border-radius:5px;border:1px solid #333;background:#000;color:#fff}
-.chat .inp button{margin-left:6px;padding:8px 12px;background:#ffcc00;border:none;border-radius:5px;font-weight:800}
+*{box-sizing:border-box;margin:0}body{font-family:Consolas,monospace;background:#0e0e0e;color:#fff;display:flex;height:100vh}
+.side{width:200px;background:#000;border-right:1px solid #222;padding:10px;display:flex;flex-direction:column}
+.side b{color:#ffcc00;margin-bottom:10px}.side button{padding:8px;background:#111;color:#fff;border:1px solid #333;border-radius:6px;margin-bottom:6px;text-align:left;cursor:pointer}
+.side button.active{background:#ffcc00;color:#000;font-weight:800}
+.main{flex:1;display:flex;flex-direction:column}
+.top{padding:10px;background:#111;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+.top button{padding:7px 12px;border-radius:20px;border:none;font-weight:700;cursor:pointer}
+.editor{flex:1;display:flex;flex-direction:column}
+.editor textarea{flex:1;background:#1e1e1e;color:#fff;border:none;padding:12px;font-size:14px;outline:none}
+.output{height:35%;background:#000;border-top:2px solid #ffcc00;padding:10px;overflow:auto}
+.output iframe{width:100%;height:100%;border:none;background:#fff}
+.output pre{color:#0f0;white-space:pre-wrap}
+.hint{padding:6px;background:#1a1a1a;color:#888;font-size:11px}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
 </head>
 <body>
-
-<nav>
-<b>APEXTEEN5 LAB - 4 CODE</b>
-<div>
-<button onclick="clearAll()">🗑️ Clear All</button>
-<button onclick="runAll()">▶️ Run All</button>
+<div class="side">
+<b>APEXTEEN5 - GitHub Only</b>
+<button class="active" onclick="openFile('main.py')" id="f-main.py">📄 main.py (Python)</button>
+<button onclick="openFile('index.html')" id="f-index.html">📄 index.html (HTML)</button>
+<button onclick="openFile('style.css')" id="f-style.css">🎨 style.css (CSS)</button>
+<button onclick="openFile('game.js')" id="f-game.js">🎮 game.js (JS Game/Photo)</button>
+<hr style="margin:10px 0;border-color:#222">
+<button onclick="newCell()">+ Add Colab Cell</button>
+<button onclick="clearSave()" style="color:#ff5555">🗑️ Clear All</button>
+<p style="font-size:10px;color:#555;margin-top:20px">Sab GitHub + Browser me save hai. Koi server nahi. Jai Maa Saraswati</p>
 </div>
-</nav>
-
 <div class="main">
-<div class="left">
-<div class="tabs">
-<button class="active" onclick="openTab('python')">1. PYTHON</button>
-<button onclick="openTab('html')">2. HTML</button>
-<button onclick="openTab('css')">3. CSS</button>
-<button onclick="openTab('js')">4. JS</button>
-</div>
-
-<div id="python" class="editor active">
-<textarea id="pyCode">print("Jai Maa Saraswati - Python")
-# Yaha game logic likho
-score = 0
-for i in range(5):
-    score += 10
-    print("Score:", score)
-</textarea>
-<div class="bar"><span>Python Code</span><button onclick="runPython()">Run Python</button></div>
-</div>
-
-<div id="html" class="editor">
-<textarea id="htmlCode"><h1>🎮 My Game</h1>
-<p>Ye mera website hai</p>
-<button onclick="alert('Game Start')">Play</button>
-<canvas id="c" width="300" height="150" style="border:2px solid #ffcc00"></canvas>
-</textarea>
-<div class="bar"><span>HTML Code - Game/Website/Photo ka structure</span><button onclick="runWeb()">Run Web</button></div>
-</div>
-
-<div id="css" class="editor">
-<textarea id="cssCode">body{background:#000;color:#fff;font-family:sans-serif;text-align:center}
-h1{color:#ffcc00;font-size:40px}
-button{padding:12px 20px;background:#ffcc00;border:none;border-radius:20px;font-weight:800}
-canvas{background:#111;border-radius:10px;margin-top:10px}
-</textarea>
-<div class="bar"><span>CSS Code - Design / Color / Photo Style</span><button onclick="runWeb()">Run CSS</button></div>
-</div>
-
-<div id="js" class="editor">
-<textarea id="jsCode">// Live Game + Website + Photo Logic
-console.log("JS Loaded");
-// Simple drawing - Photo banana
-let canvas = document.getElementById('c');
-if(canvas){
- let ctx = canvas.getContext('2d');
- ctx.fillStyle = '#ffcc00';
- ctx.fillRect(20,20,100,50);
- ctx.fillStyle = 'white';
- ctx.font = '20px sans-serif';
- ctx.fillText('ApexTeen5', 30, 50);
-}
-// Game logic
-let score = 0;
-function playGame(){ score+=10; alert('Score: '+score); }
-</textarea>
-<div class="bar"><span>JavaScript Code - Live Game Logic</span><button onclick="runWeb()">Run JS</button></div>
-</div>
-
-</div>
-
-<div class="right">
 <div class="top">
-<b id="previewTitle">Output Preview</b>
-<button onclick="runAll()" style="padding:4px 10px;background:#fff;color:#000;border:none;border-radius:5px;font-weight:700">Live Run</button>
+<span id="fname">main.py</span>
+<div><button onclick="run()" style="background:#ffcc00;color:#000">▶ Run</button></div>
 </div>
-<iframe id="webOut"></iframe>
-<pre id="pyOutput" style="display:none"></pre>
-
-<div class="chat">
-<div class="msgs" id="chatMsgs">
-<div style="color:#ffcc00">🤖 ChatBot: Namaste! Mai Hindi + English dono samajhta hu. Apna code yaha bhejo, galti fix kar dunga. Jaise likho "mera python code fix karo" ya "iska game banao"</div>
-</div>
-<div class="inp">
-<input id="chatIn" placeholder="Yaha likho: is code ko sahi karo / make a photo / game banao">
-<button onclick="chatFix()">Fix</button>
-</div>
-</div>
-
-</div>
+<div class="hint">💡 GitHub Pages pe hi Colab jaisa: Python cell add karo, HTML se website banao, JS se Game/Photo banao. Code auto-save hai.</div>
+<div class="editor"><textarea id="code"></textarea></div>
+<div class="output"><pre id="pyout" style="display:none"></pre><iframe id="webout"></iframe></div>
 </div>
 
 <script>
-function openTab(id){
- document.querySelectorAll('.editor').forEach(e=>e.classList.remove('active'));
- document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- event.target.classList.add('active');
- if(id=='python'){document.getElementById('pyOutput').style.display='block';document.getElementById('webOut').style.display='none'}
- else{document.getElementById('pyOutput').style.display='none';document.getElementById('webOut').style.display='block';runWeb()}
+let files = JSON.parse(localStorage.getItem('apex_files') || '{"main.py":"print(\'Jai Maa Saraswati - GitHub Colab\')\\n# Python + Colab Cell\\nfor i in range(3):\\n  print(\'Cell\', i)","index.html":"<h1>Meri Website</h1>\\n<button onclick=\\"play()\\">Play Game</button>\\n<canvas id=\\"c\\" width=\\"300\\" height=\\"120\\" style=\\"border:2px solid gold\\"></canvas>","style.css":"body{text-align:center;background:#000;color:#fff}\\nh1{color:gold}","game.js":"// Game + Photo Logic\\nlet c=document.getElementById(\\"c\\");\\nif(c){let x=c.getContext(\\"2d\\");x.fillStyle=\\"gold\\";x.fillRect(20,20,60,30);x.fillStyle=\\"white\\";x.fillText(\\"Apex Photo\\",22,40)}\\nfunction play(){alert(\\"Game Running - GitHub Only!\\")}"}');
+let current = 'main.py';
+let pyodide = null;
+async function loadPy(){pyodide = await loadPyodide(); document.getElementById('pyout').textContent='Pyodide Ready - Asli Python Loaded (Numpy bhi chalega)';}
+loadPy();
+
+function openFile(name){
+ current=name; document.getElementById('fname').innerText=name;
+ document.getElementById('code').value=files[name]||'';
+ document.querySelectorAll('.side button').forEach(b=>b.classList.remove('active'));
+ let btn=document.getElementById('f-'+name); if(btn) btn.classList.add('active');
+ run();
 }
-function runPython(){
- let code = document.getElementById('pyCode').value;
- let out = document.getElementById('pyOutput');
- out.style.display='block'; document.getElementById('webOut').style.display='none';
- out.textContent='';
- Sk.configure({output:(t)=>{out.textContent+=t}, read:(x)=>{if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined) throw "File not found: '"+x+"'"; return Sk.builtinFiles["files"][x]}});
- Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,true)).catch(e=>{out.textContent+='\nError: '+e.toString()});
-}
-function runWeb(){
- let h=document.getElementById('htmlCode').value;
- let c=document.getElementById('cssCode').value;
- let j=document.getElementById('jsCode').value;
- let iframe=document.getElementById('webOut');
- let full = `<html><head><style>${c}</style></head><body>${h}<script>${j}<\/script></body></html>`;
- iframe.srcdoc = full;
-}
-function runAll(){runPython();setTimeout(runWeb,300)}
-function clearAll(){
- if(confirm('Sab code delete karna hai?')){
-  document.getElementById('pyCode').value='';
-  document.getElementById('htmlCode').value='';
-  document.getElementById('cssCode').value='';
-  document.getElementById('jsCode').value='';
-  document.getElementById('pyOutput').textContent='';
-  document.getElementById('webOut').srcdoc='';
+document.getElementById('code').addEventListener('input', e=>{
+ files[current]=e.target.value;
+ localStorage.setItem('apex_files', JSON.stringify(files));
+});
+
+async function run(){
+ let code = document.getElementById('code').value;
+ files[current]=code; localStorage.setItem('apex_files', JSON.stringify(files));
+ if(current.endsWith('.py')){
+   document.getElementById('pyout').style.display='block'; document.getElementById('webout').style.display='none';
+   let out=document.getElementById('pyout'); out.textContent='Running...';
+   try{ let res = await pyodide.runPythonAsync(code); out.textContent = res ? res.toString() : '✓ Done - GitHub pe Python chal gaya'; }catch(err){ out.textContent='Error: '+err; }
+ }else{
+   document.getElementById('pyout').style.display='none'; document.getElementById('webout').style.display='block';
+   let html = files['index.html']||''; let css = files['style.css']||''; let js = files['game.js']||'';
+   if(current=='index.html') html=code; if(current=='style.css') css=code; if(current=='game.js') js=code;
+   document.getElementById('webout').srcdoc=`<style>${css}</style>${html}<script>${js}<\/script>`;
  }
 }
-function chatFix(){
- let input = document.getElementById('chatIn').value.toLowerCase();
- let msgs = document.getElementById('chatMsgs');
- let reply = document.createElement('div');
- reply.style.marginTop='6px'; reply.style.color='#aaa';
- if(input.includes('python') || input.includes('py')){
-   reply.innerHTML = '🤖 Bot: Python me <b>indent</b> ka dhyan rakho. Emoji mat use karo. Print aise likho: print("hi"). Mai apka code auto fix karke Python tab me daal diya.';
-   let code = document.getElementById('pyCode').value.replace(/[^\\x00-\\x7F]/g,'');
-   document.getElementById('pyCode').value = code;
- } else if(input.includes('html') || input.includes('website')){
-   reply.innerHTML = '🤖 Bot: HTML fix kiya. Tag close karna mat bhoolo. Preview me dekho.';
-   runWeb();
- } else if(input.includes('photo') || input.includes('image')){
-   reply.innerHTML = '🤖 Bot: Photo banane ke liye HTML me canvas daalo aur JS se draw karo. Maine example code daal diya hai.';
- } else if(input.includes('game')){
-   reply.innerHTML = '🤖 Bot: Game ke liye JS me canvas logic likho. Score badhane ka code maine pehle se daal diya hai. Run Web dabao.';
- } else {
-   reply.innerHTML = '🤖 Bot: Samajh gaya! Hindi/English dono samajhta hu. Code me galti ho to mai "print" aur bracket sahi kar deta hu. Ab Run All dabao.';
- }
- msgs.appendChild(reply);
- msgs.scrollTop = msgs.scrollHeight;
+function newCell(){
+ let n = prompt('Cell ka naam likho jaise cell2.py');
+ if(n){ files[n]='print("New Colab Cell - '+n+'")'; localStorage.setItem('apex_files', JSON.stringify(files)); location.reload(); }
 }
-runWeb();
+function clearSave(){ if(confirm('GitHub ka sab data delete?')){ localStorage.removeItem('apex_files'); location.reload(); } }
+
+openFile('main.py');
 </script>
 </body>
 </html>
